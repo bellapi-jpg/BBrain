@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BBrain</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * { font-family: 'Inter', sans-serif; }
+
+        body {
+            background: #0a0a0a;
+        }
+
+        .glow-green {
+            box-shadow: 0 0 20px rgba(0, 160, 60, 0.3);
+        }
+
+        .glow-border {
+            border: 1px solid rgba(0, 160, 60, 0.4);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #00a03c, #00ff66);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gradient-btn {
+            background: linear-gradient(135deg, #00a03c, #00cc55);
+            transition: all 0.3s ease;
+        }
+
+        .gradient-btn:hover {
+            background: linear-gradient(135deg, #00cc55, #00ff66);
+            box-shadow: 0 0 25px rgba(0, 200, 80, 0.5);
+            transform: translateY(-1px);
+        }
+
+        .card {
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(10px);
+        }
+
+        .input-field {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #f0f0f0;
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: rgba(0, 160, 60, 0.6);
+            box-shadow: 0 0 15px rgba(0, 160, 60, 0.2);
+        }
+
+        .input-field::placeholder {
+            color: rgba(255,255,255,0.3);
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #00a03c;
+            border-radius: 50%;
+            animation: float linear infinite;
+            opacity: 0.4;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+            10% { opacity: 0.4; }
+            90% { opacity: 0.4; }
+            100% { transform: translateY(-100px) translateX(20px); opacity: 0; }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center relative overflow-hidden">
+
+    <!-- Partículas decorativas -->
+    <div class="particle" style="left:10%; animation-duration:8s; animation-delay:0s;"></div>
+    <div class="particle" style="left:25%; animation-duration:12s; animation-delay:2s;"></div>
+    <div class="particle" style="left:50%; animation-duration:9s; animation-delay:4s;"></div>
+    <div class="particle" style="left:75%; animation-duration:11s; animation-delay:1s;"></div>
+    <div class="particle" style="left:90%; animation-duration:7s; animation-delay:3s;"></div>
+
+    <!-- Círculo de fundo decorativo -->
+    <div class="absolute w-96 h-96 rounded-full" 
+         style="background: radial-gradient(circle, rgba(0,160,60,0.08) 0%, transparent 70%); 
+                top: 50%; left: 50%; transform: translate(-50%, -50%);">
+    </div>
+
+    <!-- Card de Login -->
+    <div class="card glow-border rounded-2xl p-10 w-full max-w-md mx-4 relative z-10">
+        
+        <!-- Logo -->
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl glow-green mb-4"
+                 style="background: linear-gradient(135deg, #00a03c, #003d1a);">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                          d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                </svg>
+            </div>
+            <h1 class="text-3xl font-bold gradient-text">BBrain</h1>
+            <p class="text-sm mt-1" style="color: rgba(255,255,255,0.4);">
+                Gestão Inteligente de Campanhas
+            </p>
+        </div>
+
+        <!-- Formulário -->
+        <form method="POST" action="/login" class="space-y-5">
+            <div>
+                <label class="block text-xs font-medium mb-2" style="color: rgba(255,255,255,0.5);">
+                    EMAIL
+                </label>
+                <input 
+                    type="email" 
+                    name="email"
+                    placeholder="seu@email.com"
+                    class="input-field w-full px-4 py-3 rounded-xl text-sm"
+                    required
+                />
+            </div>
+
+            <div>
+                <label class="block text-xs font-medium mb-2" style="color: rgba(255,255,255,0.5);">
+                    SENHA
+                </label>
+                <input 
+                    type="password"
+                    name="senha"
+                    placeholder="••••••••"
+                    class="input-field w-full px-4 py-3 rounded-xl text-sm"
+                    required
+                />
+            </div>
+
+            <button type="submit" class="gradient-btn w-full py-3 rounded-xl text-white font-semibold text-sm mt-2">
+                Entrar no BBrain
+            </button>
+        </form>
+
+        <!-- Rodapé -->
+        <p class="text-center text-xs mt-6" style="color: rgba(255,255,255,0.2);">
+            BBrain © 2026 · Todos os direitos reservados
+        </p>
+
+    </div>
+
+</body>
+</html>
