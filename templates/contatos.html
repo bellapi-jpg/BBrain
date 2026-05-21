@@ -126,3 +126,109 @@
                 <div class="upload-area p-8 text-center cursor-pointer mb-4" onclick="document.getElementById('planilha').click()">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 mx-auto mb-3" style="color: rgba(0,160,60,0.5);" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                    </svg>
+                    <p class="text-sm font-medium text-white mb-1">Clique para selecionar a planilha</p>
+                    <p class="text-xs" style="color: rgba(255,255,255,0.3);">Formato .xlsx — colunas: Nome, Email, WhatsApp, Cidade, Bairro, Como conheceu</p>
+                    <input type="file" id="planilha" name="planilha" accept=".xlsx" class="hidden" onchange="mostrarArquivo(this)">
+                    <p id="nome-arquivo" class="text-xs mt-2" style="color: #00cc55;"></p>
+                </div>
+                <button type="submit" class="gradient-btn px-6 py-2.5 rounded-xl text-white text-sm font-semibold">
+                    Importar Contatos
+                </button>
+            </form>
+        </div>
+
+        <!-- Filtros -->
+        <div class="card p-4 mb-6">
+            <form method="GET" action="/contatos" class="flex gap-3 items-center">
+                <input
+                    type="text"
+                    name="busca"
+                    value="{{ busca }}"
+                    placeholder="Buscar por nome..."
+                    class="input-field flex-1 px-4 py-2.5 rounded-xl text-sm"
+                />
+                <select name="bairro" class="input-field px-4 py-2.5 rounded-xl text-sm">
+                    <option value="">Todos os bairros</option>
+                    {% for b in bairros %}
+                    <option value="{{ b }}" {{ 'selected' if b == bairro_filtro else '' }}>{{ b }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="gradient-btn px-5 py-2.5 rounded-xl text-white text-sm font-semibold">
+                    Filtrar
+                </button>
+                {% if busca or bairro_filtro %}
+                <a href="/contatos" class="px-5 py-2.5 rounded-xl text-sm font-medium" style="background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.5);">
+                    Limpar
+                </a>
+                {% endif %}
+            </form>
+        </div>
+
+        <!-- Tabela de contatos -->
+        <div class="card overflow-hidden">
+            <table class="w-full">
+                <thead>
+                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+                        <th class="text-left px-5 py-3 text-xs font-semibold" style="color: rgba(255,255,255,0.4);">NOME</th>
+                        <th class="text-left px-5 py-3 text-xs font-semibold" style="color: rgba(255,255,255,0.4);">WHATSAPP</th>
+                        <th class="text-left px-5 py-3 text-xs font-semibold" style="color: rgba(255,255,255,0.4);">BAIRRO</th>
+                        <th class="text-left px-5 py-3 text-xs font-semibold" style="color: rgba(255,255,255,0.4);">CIDADE</th>
+                        <th class="text-left px-5 py-3 text-xs font-semibold" style="color: rgba(255,255,255,0.4);">COMO CONHECEU</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if contatos %}
+                        {% for c in contatos %}
+                        <tr class="table-row">
+                            <td class="px-5 py-3.5">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0"
+                                         style="background: rgba(0,160,60,0.15); color: #00cc55;">
+                                        {{ c.nome[0].upper() }}
+                                    </div>
+                                    <span class="text-sm text-white">{{ c.nome }}</span>
+                                </div>
+                            </td>
+                            <td class="px-5 py-3.5 text-sm" style="color: rgba(255,255,255,0.6);">{{ c.telefone or '—' }}</td>
+                            <td class="px-5 py-3.5">
+                                {% if c.bairro %}
+                                <span class="badge text-xs px-2.5 py-1 rounded-full">{{ c.bairro }}</span>
+                                {% else %}
+                                <span style="color: rgba(255,255,255,0.3);" class="text-sm">—</span>
+                                {% endif %}
+                            </td>
+                            <td class="px-5 py-3.5 text-sm" style="color: rgba(255,255,255,0.6);">{{ c.cidade or '—' }}</td>
+                            <td class="px-5 py-3.5 text-sm" style="color: rgba(255,255,255,0.4);">{{ c.como_conheceu or '—' }}</td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="5" class="px-5 py-16 text-center">
+                                <div class="flex flex-col items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 mb-3" style="color: rgba(255,255,255,0.1);" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                    </svg>
+                                    <p class="text-sm font-medium" style="color: rgba(255,255,255,0.3);">Nenhum contato ainda</p>
+                                    <p class="text-xs mt-1" style="color: rgba(255,255,255,0.2);">Importe sua planilha Excel para começar</p>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+    </main>
+
+    <script>
+        function mostrarArquivo(input) {
+            const nome = input.files[0]?.name;
+            if (nome) {
+                document.getElementById('nome-arquivo').textContent = '📎 ' + nome;
+            }
+        }
+    </script>
+
+</body>
+</html>
